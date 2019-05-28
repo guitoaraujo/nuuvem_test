@@ -1,0 +1,56 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Sales</h1>
+<%= form_tag(sales_file_import_path, method: :post, multipart: true) do %>
+
+  <div class="field">
+    <%= label_tag :file %>
+    <%= file_field_tag :file %>
+  </div>
+
+  <div class="actions">
+    <%= submit_tag 'Import Now' %>
+  </div>
+<% end %>
+
+<% unless @total.blank? %>
+  <div class="field">
+    <h2>Total gross income of the last uploaded file:
+      <span style="color: green;"><%= number_to_currency(@total, unit: "R$", separator: ",", delimiter: ".") %></span>
+    </h2>
+  </div>
+<% end %>
+
+<table>
+  <thead>
+    <tr>
+      <th>Purchaser name</th>
+      <th>Item description</th>
+      <th>Item price</th>
+      <th>Purchase count</th>
+      <th>Merchant address</th>
+      <th>Merchant name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sales.each do |sale| %>
+      <tr>
+        <td><%= sale.purchaser_name %></td>
+        <td><%= sale.item_description %></td>
+        <td><%= sale.item_price %></td>
+        <td><%= sale.purchase_count %></td>
+        <td><%= sale.merchant_address %></td>
+        <td><%= sale.merchant_name %></td>
+        <td><%= link_to 'Show', sale %></td>
+        <td><%= link_to 'Edit', edit_sale_path(sale) %></td>
+        <td><%= link_to 'Destroy', sale, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Sale', new_sale_path %>
